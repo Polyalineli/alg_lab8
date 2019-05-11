@@ -54,7 +54,10 @@ class AdjMatrixGraph:
         :param int u: индекс вершины графа
         :param int v: индекс вершины графа
         """
-        raise NotImplemented("Реализуйте этот метод")
+        self.adj[u][v] = 1
+        
+        
+        #raise NotImplemented("Реализуйте этот метод")
 
     def remove_edge(self, u, v):
         """ Удалить ребро, соединяющее вершины с индексами u и v
@@ -62,14 +65,21 @@ class AdjMatrixGraph:
         :param int u: индекс вершины графа
         :param int v: индекс вершины графа
         """
-        raise NotImplemented("Реализуйте этот метод")
+        self.adj[u][v] = 0
+        #raise NotImplemented("Реализуйте этот метод")
 
     def number_of_edges(self):
         """ Возвращает количество ребер в графе
 
         :rtype: int
         """
-        raise NotImplemented("Реализуйте этот метод")
+        count=0
+        for i in self.adj:
+            for j in i:
+                if j==1:
+                    count+=1
+        return count
+        #raise NotImplemented("Реализуйте этот метод")
 
     def neighbors(self, v):
         """ Возвращает список индексов вершин, соседних с данной
@@ -77,13 +87,18 @@ class AdjMatrixGraph:
         :param int v: индекс вершины графа
         :rtype: list of int
         """
-        raise NotImplemented("Реализуйте этот метод")
+        s=[]
+        for i in range(len(self.adj[v])):
+            if self.adj[v][i] == 1:
+                s.append(i)
+        return s
+        #raise NotImplemented("Реализуйте этот метод")
 
-    def draw(self, filename='test.gv'):
-        """
-        Отрисовывает граф используя библиотеку Graphviz. Больше примеров:
-        https://graphviz.readthedocs.io/en/stable/examples.html
-        """
+"""    def draw(self, filename='test.gv'):
+       
+        #Отрисовывает граф используя библиотеку Graphviz. Больше примеров:
+        #https://graphviz.readthedocs.io/en/stable/examples.html
+        
         g = Graph('G', filename=filename, engine='sfdp')
 
         for v, attr in enumerate(self.attributes):
@@ -104,7 +119,7 @@ class AdjMatrixGraph:
                 if self.adj[i][j]:
                     g.edge(str(i), str(j))
 
-        g.view()
+        g.view()"""
 
 
 def main():
@@ -120,10 +135,12 @@ def main():
     g.add_edge(1, 3)
     g.add_edge(1, 4)
     g.remove_edge(1, 2)
+    print(g.adj)
+    print(g.attributes)
     print(g.number_of_edges())
     print(g.number_of_vertices())
-    print(g.neighbors(0))
-    g.draw()
+    print(g.neighbors(1))
+    #g.draw()"""
 
 
 if __name__ == "__main__":

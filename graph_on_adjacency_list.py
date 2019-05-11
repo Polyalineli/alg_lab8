@@ -18,7 +18,8 @@ class AdjListGraph:
         """
         for i in range(n):
             self.adj.append(list())
-            self.attributes.append(dict())
+            self.attributes.append({})
+            #self.attributes.append({'neighbors': []})
 
     def remove_vertex(self, v):
         """ Удалить вершину из графа
@@ -41,7 +42,13 @@ class AdjListGraph:
         :param int u: индекс вершины графа
         :param int v: индекс вершины графа
         """
-        raise NotImplemented("Реализуйте этот метод")
+        self.adj[u].append(v)
+        self.adj[v].append(u)
+        
+        #self.adj.append(str(self.attributes[u]['name'])+str(self.attributes[v]['name']))
+        #self.attributes[u]['neighbors'].append(v)
+        #self.attributes[v]['neighbors'].append(u)
+        #raise NotImplemented("Реализуйте этот метод")
 
     def remove_edge(self, u, v):
         """ Удалить ребро, соединяющее вершины с индексами u и v
@@ -49,14 +56,24 @@ class AdjListGraph:
         :param int u: индекс вершины графа
         :param int v: индекс вершины графа
         """
-        raise NotImplemented("Реализуйте этот метод")
+        self.adj[u].remove(v)
+        self.adj[v].remove(u)
+        #self.adj.remove(str(self.attributes[u]['name'])+str(self.attributes[v]['name']))        
+        #self.attributes[u]['neighbors'].remove(v)
+        #self.attributes[v]['neighbors'].remove(u)
+        #raise NotImplemented("Реализуйте этот метод")
 
     def number_of_edges(self):
         """ Возвращает количество ребер в графе
 
         :rtype: int
         """
-        raise NotImplemented("Реализуйте этот метод")
+        count=0
+        for i in self.adj:
+            for j in i:
+                count+=1
+        return count//2
+        #raise NotImplemented("Реализуйте этот метод")
 
     def neighbors(self, v):
         """ Возвращает список индексов вершин, соседних с данной
@@ -64,13 +81,14 @@ class AdjListGraph:
         :param int v: индекс вершины графа
         :rtype: list of int
         """
-        raise NotImplemented("Реализуйте этот метод")
+        return self.adj[v]
+        #raise NotImplemented("Реализуйте этот метод")
 
-    def draw(self, filename='test.gv'):
-        """
-        Отрисовывает граф используя библиотеку Graphviz. Больше примеров:
-        https://graphviz.readthedocs.io/en/stable/examples.html
-        """
+"""    def draw(self, filename='test.gv'):
+        
+        #Отрисовывает граф используя библиотеку Graphviz. Больше примеров:
+        #https://graphviz.readthedocs.io/en/stable/examples.html
+        
         g = Graph('G', filename=filename, engine='sfdp')
 
         for v, attr in enumerate(self.attributes):
@@ -91,7 +109,7 @@ class AdjListGraph:
                 if i < j:
                     g.edge(str(i), str(j))
 
-        g.view()
+        g.view() """
 
 
 def main():
@@ -100,17 +118,22 @@ def main():
     for i, c in zip(range(5), string.ascii_lowercase):
         g.attributes[i]['name'] = c
 
+    
+
     g.add_edge(0, 1)
     g.add_edge(1, 2)
     g.add_edge(2, 3)
     g.add_edge(3, 4)
     g.add_edge(1, 3)
-    g.add_edge(1, 4)
+    g.add_edge(1, 4)    
     g.remove_edge(1, 2)
     print(g.number_of_edges())
     print(g.number_of_vertices())
     print(g.neighbors(1))
-    g.draw()
+    print(g.adj)
+    print(g.attributes)
+    
+   # g.draw() 
 
 
 if __name__ == "__main__":
